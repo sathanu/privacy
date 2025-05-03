@@ -1,0 +1,25 @@
+name: Deploy HTML to production.shiningdawn.in via SFTP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install lftp
+        run: sudo apt-get install -y lftp
+
+      - name: Upload HTML to production.shiningdawn.in folder
+        run: |
+          lftp -c "
+            set sftp:auto-confirm yes;
+            open -u vaikpvwe,7273OObjk*EHo# sftp://optimus.herosite.pro:22;
+            mirror -R -e ./ production.shiningdawn.in
+          "
