@@ -23,7 +23,6 @@ jobs:
           protocol: ftp
           local-dir: ./
           server-dir: /production.shiningdawn.in/
-          dangerous-clean-slate: true
           exclude: |
             .well-known/*
             cgi-bin/*
