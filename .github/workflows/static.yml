@@ -3,7 +3,7 @@ name: FTP Deploy to production.shiningdawn.in
 on:
   push:
     branches:
-      - main
+      - production
 
 jobs:
   ftp-deploy:
