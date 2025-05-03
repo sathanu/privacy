@@ -27,3 +27,4 @@ jobs:
           exclude: |
             .well-known/*
             cgi-bin/*
+            images/*
