@@ -23,4 +23,6 @@ jobs:
           protocol: ftp
           local-dir: ./    # Local directory to upload
           server-dir: /production.shiningdawn.in/  # Remote FTP path
-          dangerous-clean-slate: true
+          exclude: |
+            .well-known/*
+            cgi-bin/*
