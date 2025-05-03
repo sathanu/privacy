@@ -1,4 +1,4 @@
-name: Deploy HTML to production.shiningdawn.in via FTP
+name: FTP Deploy using lftp (preserve .well-known and cgi-bin)
 
 on:
   push:
@@ -10,19 +10,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ftp.optimus.herosite.pro
-          username: vaikpvwe
-          password: 7273OObjk*EHo#
-          port: 21
-          protocol: ftp
-          local-dir: ./    # Local directory to upload
-          server-dir: /production.shiningdawn.in/  # Remote FTP path
-          exclude: |
-            .well-known/*
-            cgi-bin/*
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
+      - name: Clean remote folder (except .well-known and cgi-bin) and upload
+        run: |
+          lftp -u vaikpvwe,7273OObjk*EHo# -e "
+            open ftp.optimus.herosite.pro;
+            cd /production.shiningdawn.in;
+
+            # Remove all files/folders except .well-known and cgi-bin
+            cls -1 --sort=date | grep -vE '^\.well-known$|^cgi-bin$' | while read item; do
+              echo \"Deleting: \$item\";
+              rm -r \$item;
+            done;
+
+            # Mirror local files to remote
+            mirror -R -e ./ /production.shiningdawn.in/;
+
+            bye
+          "
