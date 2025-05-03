@@ -26,6 +26,3 @@ jobs:
           exclude: |
             .well-known/*
             cgi-bin/*
-            .ftp-deploy-sync-state.json
-            .git/*
-            .github/*
